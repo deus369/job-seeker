@@ -3,3 +3,7 @@ job_ids.json
 job_states.json
 job_titles.json
 job_urls.json
+
+~
+__pycache__
+geckodriver.log
