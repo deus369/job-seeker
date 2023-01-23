@@ -1,0 +1,5 @@
+# ignore json data
+job_ids.json
+job_states.json
+job_titles.json
+job_urls.json
