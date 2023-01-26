@@ -21,8 +21,7 @@ def hide_load_ui():
 
 def toggle_treeview(event):
     print("Toggling tree visibility.")
-    global tree
-    is_visible = not tree.winfo_ismapped()
+    is_visible = not globals.tree.winfo_ismapped()
     set_visibility_treeview(is_visible)
 
 def toggle_loading_ui(event):
@@ -58,7 +57,6 @@ def create_load_ui(tree_window):
 
 # def hide_loading_ui2():
 #     if loading_window.winfo_exists():
-#         global tree_window
 #         tree_window.unbind("<Configure>")
 #         loading_window.destroy()
 

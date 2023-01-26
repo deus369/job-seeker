@@ -11,6 +11,7 @@ import globals
 from slug_converter import convert_text_to_slug
 from loading_ui import *
 from treeview import *
+from web_scanner import scan_all_seek_terms
 
 def on_background_action_end():
     if globals.is_performing_action:
@@ -40,8 +41,7 @@ def scan_submit_response(job_data, response_text):
         job_data.save_data()
 
 def on_add_job(i, job_id, job_title, job_link):
-    global tree
-    create_ui_row(tree, i, job_id, job_title, job_link, (JobState.NONE.value))
+    create_ui_row(globals.tree, i, job_id, job_title, job_link, (JobState.NONE.value))
 
 def apply_job_ui(event, job_data, apply_job_thread, job_clicked):
     if globals.is_performing_action:
@@ -53,8 +53,8 @@ def apply_job_ui(event, job_data, apply_job_thread, job_clicked):
     threading.Thread(target=apply_job_thread, args=(job_data, globals.selected_job, job_clicked, update_row_job_state, update_loading_label, on_background_action_end)).start()
 
 def create_window(title, job_data, job_clicked, apply_job_thread, scan_all_seek_terms):
-    global tree_window
-    tree_window = tk.Tk()
+    globals.tree_window = tk.Tk()
+    tree_window = globals.tree_window
     tree_window.attributes("-zoomed", True)
     tree_window.configure(bg=globals.background_color)
     def on_closing():
@@ -74,7 +74,7 @@ def create_window(title, job_data, job_clicked, apply_job_thread, scan_all_seek_
 
 
 def create_jobs_ui(job_data, job_clicked, job_applied_clicked, apply_job_thread, apply_jobs_thread, scan_all_seek_terms):
-    global tree_window
+    tree_window = globals.tree_window
     tree_window = create_window("Job Viewer", job_data, job_clicked, apply_job_thread, scan_all_seek_terms)
     create_treeview(tree_window, job_data, job_clicked, job_applied_clicked, apply_jobs_thread, bulk_apply, show_load_ui, update_loading_label, on_background_action_end)
     create_load_ui(tree_window)

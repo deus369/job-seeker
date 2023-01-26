@@ -9,6 +9,17 @@ import time
 
 # keys: (z) apply jobs (x) apply job  (c) scan
 
+# terms:
+# game designer
+# ui designer
+# game artist
+# game developer
+# game programmer
+# unreal
+# unity
+# metaverse
+# mobile game
+
 # z to apply for multiple jobs
 # b to open scanner and scan more jobs
 # need to make scanning background thread

@@ -52,9 +52,8 @@ def bulk_apply(event, tree, job_data, job_clicked, apply_jobs_thread, show_load_
 
 
 def update_row_job_state(job_response, row):
-    global tree
     if job_response != 0:
-        tree.set(row, column=job_state_column, value=JobState(job_response).name)
+        globals.tree.set(row, column=job_state_column, value=JobState(job_response).name)
 
 def get_cell_value(tree, item, row, column):
     if (column == "#0"):
@@ -66,8 +65,7 @@ def get_cell_value(tree, item, row, column):
 
 def toggle_treeview(event):
     print("Toggling tree visibility.")
-    global tree
-    is_visible = not tree.winfo_ismapped()
+    is_visible = not globals.tree.winfo_ismapped()
     set_visibility_treeview(is_visible)
 
 def create_ui_row(tree, i, id, title, url, job_state): # , new_job):
@@ -75,22 +73,21 @@ def create_ui_row(tree, i, id, title, url, job_state): # , new_job):
     # , "new" if new_job else "old",))
 
 def set_visibility_treeview(is_visible):
-    global tree
     global scrollbar_y
     global scrollbar_x
     if is_visible:
-        tree.grid()
+        globals.tree.grid()
         scrollbar_x.grid()
         scrollbar_y.grid()
     else:
-        tree.grid_remove()
+        globals.tree.grid_remove()
         scrollbar_x.grid_remove()
         scrollbar_y.grid_remove()
 
 def create_treeview(tree_window, job_data, job_clicked, job_applied_clicked, apply_jobs_thread, bulk_apply, show_load_ui, update_loading_label, on_background_action_end):
     # create our treeview
-    global tree
-    tree = ttk.Treeview(tree_window, columns=("title","state","action","set_applied","id","url"))
+    globals.tree = ttk.Treeview(tree_window, columns=("title","state","action","set_applied","id","url"))
+    tree = globals.tree
     # create scrollbars
     global scrollbar_y
     global scrollbar_x

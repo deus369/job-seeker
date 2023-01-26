@@ -9,6 +9,7 @@ from selenium.common.exceptions import NoSuchWindowException
 from selenium.common.exceptions import TimeoutException
 from selenium.common.exceptions import WebDriverException
 from selenium.common.exceptions import StaleElementReferenceException
+from selenium.common.exceptions import InvalidSessionIdException
 import time
 import globals
 from job_state import JobState
@@ -35,10 +36,10 @@ def check_driver_status():
     try:
         test_url = driver.current_url
         return True
-    except NoSuchWindowException: # selenium.common.exceptions. NoSuchWindowException
+    except: # (NoSuchWindowException, InvalidSessionIdException): # selenium.common.exceptions. NoSuchWindowException
         print("check_driver_status: Driver broken, restarting driver.")
         open_web_driver(driver_headless)
-        if login_to_seek():
+        if login_to_seek_again():
             return True
     return False
 
@@ -120,7 +121,14 @@ def scan_all_seek_terms(job_data, job_seek_terms, on_add_job):
         print("Seeking jobs with search term [" + seek_term + "]")
         scan_jobs(job_data, seek_term, on_add_job)
 
+def login_to_seek_again():
+    login_to_seek(email_cache, password_cache)
+
 def login_to_seek(email, password):
+    global email_cache
+    email_cache = email
+    global password_cache
+    password_cache = password
     # first go to page
     driver.get(globals.seek_url)
     wait = WebDriverWait(driver, 12)
@@ -219,8 +227,8 @@ def apply_for_job(apply_url):
         return 0
     try:
         add_cover_letter_span.click()
-    except WebDriverException:
-        print("add_cover_letter_span.click had a WebDriverException exception.")
+    except: #  WebDriverException:
+        print("add_cover_letter_span.click had a exception.")
         return 0
     print(" > Clicked button for cover letter.")
     wait.until(EC.visibility_of_element_located((By.XPATH, "//button[*/*[text()='Done']]")))  # wait for it to load
@@ -233,8 +241,8 @@ def apply_for_job(apply_url):
         return 0
     try:
         radio_button.click()
-    except WebDriverException:
-        print("radio_button.click had a WebDriverException exception.")
+    except: #  WebDriverException:
+        print("radio_button.click had a exception.")
         return 0
 
     print(" > Selected cover letter.")
@@ -246,8 +254,8 @@ def apply_for_job(apply_url):
         return 0
     try:
         done_button.click()
-    except WebDriverException:
-        print("done_button.click had a WebDriverException exception.")
+    except: # WebDriverException:
+        print("done_button.click had a exception.")
         return 0
 
     if not is_disable_submission:
@@ -258,7 +266,7 @@ def apply_for_job(apply_url):
             return 0
         try:
             submit_button.click()
-        except WebDriverException:
+        except: #  WebDriverException:
             print("submit_button.click had a WebDriverException exception.")
             return 0
         print(" > Submit button clicked")

@@ -25,7 +25,7 @@ def load_login():
 
 def spawn_login_ui(on_logged_in):
     login_ui = tk.Tk() # tk.Toplevel()
-    def submit():
+    def on_login():
         username = username_var.get()
         password = password_var.get()
         print(f"Username: {username}") #  - Password: {password}")
@@ -43,7 +43,7 @@ def spawn_login_ui(on_logged_in):
     username_entry = tk.Entry(login_ui, textvariable=username_var)
     password_label = tk.Label(login_ui, text="Password:")
     password_entry = tk.Entry(login_ui, textvariable=password_var, show="*")
-    submit_button = tk.Button(login_ui, text="Submit", command=submit)
+    submit_button = tk.Button(login_ui, text="Login", command=on_login)
     username_label.grid(row=0, column=0)
     username_entry.grid(row=0, column=1)
     password_label.grid(row=1, column=0)
