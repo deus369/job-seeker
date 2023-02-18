@@ -40,6 +40,6 @@ git commit -m "$commitmsg"	# create commit
 echo "	- Created commit."
 
 # finally push the git change
-source git_push_only.sh
+source bash/git_push_only.sh
 
 echo Finished Git Push
