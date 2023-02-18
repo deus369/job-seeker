@@ -1,5 +1,5 @@
 import json
-from job_state import JobState
+from data.job_state import JobState
 
 def save_json(file_name, data):
     with open(file_name, 'w') as file:

@@ -1,6 +1,6 @@
 import tkinter as tk
 import os
-from encrypter import *
+from util.encrypter import *
 login_directory = "~/.config/job_seeker.txt"
 
 def save_login(username, password):

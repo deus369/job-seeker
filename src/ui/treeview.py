@@ -3,9 +3,9 @@ import tkinter as tk
 from tkinter import messagebox
 import threading
 import globals
-from job_state import JobState
-from selected_job import SelectedJob
-from loading_ui import *
+from data.job_state import JobState
+from data.selected_job import SelectedJob
+from ui.loading_ui import *
 
 # todo: Fix bulk_apply input passing.. a bit annoying
 

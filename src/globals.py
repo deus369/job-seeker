@@ -1,6 +1,6 @@
 # global variables
-from selected_job import SelectedJob
-from job_datas import JobDatas
+from data.selected_job import SelectedJob
+from data.job_datas import JobDatas
 
 # paths
 geckodriver_path = '/usr/local/bin/geckodriver'

@@ -2,16 +2,16 @@ import tkinter as tk
 from tkinter import messagebox
 from tkinter import ttk
 import webbrowser
-from job_state import JobState
-from selected_job import SelectedJob
 #sudo apt-get install python3-tk
 import time
 import threading
 import globals
-from slug_converter import convert_text_to_slug
-from loading_ui import *
-from treeview import *
-from web_scanner import scan_all_seek_terms
+from data.job_state import JobState
+from data.selected_job import SelectedJob
+from ui.loading_ui import *
+from ui.treeview import *
+from web.web_scanner import scan_all_seek_terms
+from util.slug_converter import convert_text_to_slug
 
 def on_background_action_end():
     if globals.is_performing_action:

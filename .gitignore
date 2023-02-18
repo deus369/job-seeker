@@ -4,6 +4,11 @@ job_states.json
 job_titles.json
 job_urls.json
 
+build
+dist
 ~
 __pycache__
-geckodriver.log
+geckodriver*
+
+jobseeker
+jobseeker.spec

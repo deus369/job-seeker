@@ -12,22 +12,24 @@ from selenium.common.exceptions import StaleElementReferenceException
 from selenium.common.exceptions import InvalidSessionIdException
 import time
 import globals
-from job_state import JobState
+from data.job_state import JobState
 
 driver_headless = True
 is_disable_submission = False
 
-def open_web_driver(is_headless):
+def open_web_driver(geckodriver_filepath, is_headless):
     global driver
+    firefox_filepath = "/usr/bin/firefox"
     driver_headless = is_headless
-    # Create a new service object and set the path of geckodriver binary to it
-    service = Service(globals.geckodriver_path)
-    service.start()
-    options = Options()
+    print("Firefox filepath is [" + firefox_filepath + "]")
+    print("Geckodriver filepath is [" + geckodriver_filepath + "]")
+    options = webdriver.FirefoxOptions()
+    options.binary_location = firefox_filepath
+    options.profile = None
     if (is_headless):
         options.add_argument("--headless")
-    # Initialize web driver
-    # driver = webdriver.Firefox(executable_path=geckodriver_path, options=options)
+    service = Service(geckodriver_filepath + "geckodriver") # globals.geckodriver_path)
+    service.start() # Initialize web driver
     driver = webdriver.Firefox(service=service, options=options)
     print(" + Opened Firefox driver.")
     return driver
@@ -332,3 +334,17 @@ def apply_for_job(apply_url):
     # driver.get(globals.seek_url)
     # wait = WebDriverWait(driver, 22)
     # print("Tab was closed. Finished applying for job.")
+
+    # print("globals.geckodriver_path? " +  globals.geckodriver_path)
+    #options = Options()
+    #options.add_argument('--disable-dev-shm-usage')
+    #options.add_argument('--no-sandbox')
+    # profile_path = "" # '/path/to/firefox/profile'
+    #options.profile = webdriver.FirefoxProfile(profile_path)
+    # options.config
+    # "/snap/firefox/current/firefox.launcher" # "/snap/bin/firefox"
+    # options.binary_location = r'/usr/lib/firefox-esr/firefox-es'
+    # Create a new service object and set the path of geckodriver binary to it
+    # geckodriver_filepath = str(pathlib.Path(__file__).parent.resolve()) + "/"
+    # firefox_filepath = "/usr/bin/firefox-esr"
+    # print("Geckodriver filepath is [" + geckodriver_filepath + "]")

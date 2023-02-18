@@ -1,7 +1,7 @@
 from tkinter import ttk
 import tkinter as tk
-from treeview import *
 import globals
+from ui.treeview import *
 
 def set_visibility_load_ui(is_visible):
     global progress_bar
