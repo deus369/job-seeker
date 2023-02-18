@@ -2,7 +2,6 @@
 
 cd ..
 echo "Inside Directory [$PWD]"
-ssh-add $HOME/.ssh/zoxel
 echo "-> Getting modified or updated git files."
 modified_and_new_files="$(git ls-files --modified --others --exclude-standard)"
 if [ -z "$modified_and_new_files" ]; then
@@ -35,11 +34,12 @@ fi
 echo "-> Enter your commit message"
 read commitmsg # get commit message off user
 echo "	- Commit message is [$commitmsg]"
+ssh-add $HOME/.ssh/zoxel
 git add -A	# add all files to staged list
 git commit -m "$commitmsg"	# create commit
 echo "	- Created commit."
-sleep 1
+
 # finally push the git change
-git push -u origin main # no longer master branch but main
+source git_push_only.sh
+
 echo Finished Git Push
-sleep 16
