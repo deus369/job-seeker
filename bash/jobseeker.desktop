@@ -1,5 +1,5 @@
 [Desktop Entry]
 Name=Job Seeker
-Exec=/usr/local/jobseeker/jobseeker
+Exec=sh -c 'cd /usr/local/jobseeker && /usr/local/jobseeker/jobseeker'
 Terminal=false
 Type=Application

@@ -11,6 +11,7 @@ from selenium.common.exceptions import WebDriverException
 from selenium.common.exceptions import StaleElementReferenceException
 from selenium.common.exceptions import InvalidSessionIdException
 import time
+import os
 import globals
 from data.job_state import JobState
 
@@ -20,17 +21,25 @@ is_disable_submission = False
 def open_web_driver(geckodriver_filepath, is_headless):
     global driver
     firefox_filepath = "/usr/bin/firefox"
+    # log_path = "/var/log/" # os.path.expanduser("~/geckodriver.log")
+    log_path = "/dev/null" # None # "/tmp/geckodriver.log"
     driver_headless = is_headless
     print("Firefox filepath is [" + firefox_filepath + "]")
     print("Geckodriver filepath is [" + geckodriver_filepath + "]")
+    print("Log filepath is [" + str(log_path) + "]")
     options = webdriver.FirefoxOptions()
     options.binary_location = firefox_filepath
+    # options.log_path= "./Log/geckodriver.log"
+    # options.log_path = log_path
+    #options.add_argument('--disable-logging') 
+    #options.add_argument('--log-level 3') 
+    # options.add_experimental_option("excludeSwitches", ["enable-logging"])
     options.profile = None
     if (is_headless):
         options.add_argument("--headless")
     service = Service(geckodriver_filepath + "geckodriver") # globals.geckodriver_path)
-    service.start() # Initialize web driver
-    driver = webdriver.Firefox(service=service, options=options)
+    # service.start() # Initialize web driver
+    driver = webdriver.Firefox(service=service, options=options, log_path = log_path)
     print(" + Opened Firefox driver.")
     return driver
 
