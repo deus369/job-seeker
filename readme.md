@@ -6,7 +6,7 @@ A quick and dirty app, automates/assists job seeking.
     - Applies for jobs with resume and cover letter
 
 <p align="center">
-  <img src="screenshots/Screenshot_2023-02-20_19-08-21.png" width="300" />
-  <img src="screenshots/Screenshot_2023-02-20_19-08-51.png" width="300" /> 
-  <img src="screenshots/Screenshot_2023-02-20_19-09-22.png" width="300" />
+  <img src="screenshots/Screenshot_2023-02-20_19-08-21.png" width="420" />
+  <img src="screenshots/Screenshot_2023-02-20_19-08-51.png" width="420" /> 
+  <img src="screenshots/Screenshot_2023-02-20_19-09-22.png" width="420" />
 </p>
