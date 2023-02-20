@@ -5,4 +5,8 @@ A quick and dirty app, automates/assists job seeking.
     - Saves job application states
     - Applies for jobs with resume and cover letter
 
-![Alt text](/screenshots/Screenshot_2023-02-18_21-06-54.png?raw=false "Job Seeker App")
+<p align="center">
+  <img src="Screenshot_2023-02-20_19-08-21.png" width="300" />
+  <img src="Screenshot_2023-02-20_19-08-51.png" width="300" /> 
+  <img src="Screenshot_2023-02-20_19-09-22.png" width="300" />
+</p>

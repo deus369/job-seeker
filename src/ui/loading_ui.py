@@ -4,20 +4,17 @@ import globals
 from ui.treeview import *
 
 def set_visibility_load_ui(is_visible):
-    global progress_bar
+    # global progress_bar
     if is_visible:
-        progress_bar.grid()
-        load_label.grid()
+        #globals.load_ui.grid()
+        globals.load_ui.pack(fill=tk.BOTH, expand=True)
+        #load_label.grid()
     else:
-        progress_bar.grid_remove()
-        load_label.grid_remove()
-    set_visibility_treeview(not is_visible)
-
-def show_load_ui():
-    set_visibility_load_ui(True)
-
-def hide_load_ui():
-    set_visibility_load_ui(False)
+        #globals.load_ui.grid_remove()
+        globals.load_ui.pack_forget()
+        #globals.load_ui.config(state='disabled')
+        #load_label.grid_remove()
+    # set_visibility_treeview(not is_visible)
 
 def toggle_treeview(event):
     print("Toggling tree visibility.")
@@ -26,10 +23,8 @@ def toggle_treeview(event):
 
 def toggle_loading_ui(event):
     tree_window = event.widget
-    if progress_bar.winfo_ismapped():
-        hide_load_ui()
-    else:
-        show_load_ui()
+    set_visibility_load_ui(progress_bar.winfo_ismapped())
+    set_visibility_treeview(not progress_bar.winfo_ismapped())
 
 def update_loading_bar(percentage):
     global progress_bar
@@ -40,15 +35,25 @@ def update_loading_label(text):
     load_label['text'] = text
 
 def create_load_ui(tree_window):
+    if (tree_window == None):
+        return
+    ttk.Style().configure("TProgressbar", foreground=globals.foreground_color, background=globals.background_color)
+    load_ui = tk.Frame(tree_window)
+    globals.load_ui = load_ui
+    load_ui.pack(fill=tk.BOTH, expand=True)
+    load_ui.configure(background=globals.background_color)
     global progress_bar
     global load_label
-    load_label = tk.Label(tree_window, text='Loading...')
-    load_label.grid(row=0, column=0, columnspan=2, pady=10, padx=10, sticky='nsew')
+    load_label = tk.Label(load_ui, text='Loading', font=("Monocraft", 14, "bold"))
+    #load_label.grid(row=0, column=0, columnspan=2, pady=10, padx=10, sticky='nsew')
+    progress_bar = ttk.Progressbar(load_ui, orient="horizontal", length=200, mode="determinate")
+    #progress_bar.grid(row=1, column=0, columnspan=2, pady=10, padx=10, sticky='nsew')
     load_label.configure(bg=globals.background_color, foreground=globals.font_color)
-    progress_bar = ttk.Progressbar(tree_window, orient="horizontal", length=200, mode="determinate")
-    progress_bar.grid(row=1, column=0, columnspan=2, pady=10, padx=10, sticky='nsew')
+    # progress_bar.configure(bg=globals.background_color, foreground=globals.font_color)
+    load_label.pack(pady=20, side=tk.TOP, expand=True, anchor="center")
+    progress_bar.pack(pady=20, side=tk.TOP, expand=True, anchor="center")
     progress_bar.start()
-    hide_load_ui()
+    set_visibility_load_ui(False)
 
 
 # def update_loading_label2(text):

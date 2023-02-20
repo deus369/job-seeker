@@ -34,8 +34,14 @@ def main():
     driver = open_web_driver(geckodriver_filepath, is_headless)
     if driver is None:
         return
-    login_ui = spawn_login_ui(on_logged_in)
-    login_ui.mainloop()
+    
+    # change workflow to just a main app with a login page
+    #login_ui = spawn_login_ui(on_logged_in)
+    #login_ui.mainloop()
+
+    ui = create_window(globals.job_data, job_clicked, job_applied_clicked, apply_job_thread, apply_jobs_thread, scan_all_seek_terms)
+    ui.mainloop() 
+    
     close_web_driver()
 
 main()

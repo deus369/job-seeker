@@ -142,14 +142,15 @@ def scan_all_seek_terms(job_data, job_seek_terms, on_add_job):
         scan_jobs(job_data, seek_term, on_add_job)
 
 def login_to_seek_again():
-    login_to_seek(email_cache, password_cache)
+    login_to_seek(email_cache, password_cache, None)
 
-def login_to_seek(email, password):
+def login_to_seek(email, password, on_logged_in):
     global email_cache
     email_cache = email
     global password_cache
     password_cache = password
     # first go to page
+    print(" > Navigating to Seek Page.")
     driver.get(globals.seek_url)
     wait = WebDriverWait(driver, 12)
     print(" > Seek Page Arrived.")
@@ -185,6 +186,8 @@ def login_to_seek(email, password):
     wait = WebDriverWait(driver, 12)
     print(" > Logged in to [" + globals.seek_url + "].")
     wait.until(lambda driver: driver.current_url == globals.seek_url)
+    if on_logged_in != None:
+        on_logged_in()
     return True
 
 # Returns the job state enum value, 0, 1, 2

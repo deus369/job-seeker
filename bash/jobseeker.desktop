@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=Job Seeker
 Exec=sh -c 'cd /usr/local/jobseeker && /usr/local/jobseeker/jobseeker'
+Icon=/usr/local/jobseeker/icon.png
 Terminal=false
 Type=Application

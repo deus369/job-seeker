@@ -12,3 +12,5 @@ One popular tool for creating a standalone executable from Python code is PyInst
 The --onefile option tells PyInstaller to bundle your code into a single executable file, which can be useful for distributing your application to users.
 
 Note that there are other tools you can use to bundle your Python code into an executable binary, such as cx_Freeze and PyOxidizer, but PyInstaller is a popular and well-supported option.
+
+![Alt text](/screenshots/Screenshot_2023-02-18_21-06-54.png?raw=false "Job Seeker App")

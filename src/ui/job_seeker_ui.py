@@ -2,7 +2,6 @@ import tkinter as tk
 from tkinter import messagebox
 from tkinter import ttk
 import webbrowser
-#sudo apt-get install python3-tk
 import time
 import threading
 import globals
@@ -10,13 +9,17 @@ from data.job_state import JobState
 from data.selected_job import SelectedJob
 from ui.loading_ui import *
 from ui.treeview import *
-from web.web_scanner import scan_all_seek_terms
+from ui.login_ui import *
+from web.web_scanner import *
+# from web.web_scanner import scan_all_seek_terms
 from util.slug_converter import convert_text_to_slug
+#sudo apt-get install python3-tk
 
 def on_background_action_end():
     if globals.is_performing_action:
         globals.is_performing_action = False
-        hide_load_ui()
+        set_visibility_load_ui(False)
+        set_visibility_treeview(True)
 
 def open_text_input_popup(event, job_data, response_function):
     # Create a new window for the popup
@@ -47,14 +50,36 @@ def apply_job_ui(event, job_data, apply_job_thread, job_clicked):
     if globals.is_performing_action:
         return
     globals.is_performing_action = True
-    show_load_ui()
+    set_visibility_load_ui(True)
+    set_visibility_treeview(False)
     # Start the action
     # threading.Thread(target=apply_job_thread).start()
     threading.Thread(target=apply_job_thread, args=(job_data, globals.selected_job, job_clicked, update_row_job_state, update_loading_label, on_background_action_end)).start()
 
-def create_window(title, job_data, job_clicked, apply_job_thread, scan_all_seek_terms):
+#title, job_data, job_clicked, apply_job_thread, scan_all_seek_terms):
+
+def on_logged_in():
+    print("Finished Logging In.")
+    set_visibility_load_ui(False)
+    set_visibility_treeview(True)
+
+def start_login_thread(email, password):
+    set_visibility_load_ui(True)
+    update_loading_label("Logging In")
+    threading.Thread(target=login_to_seek, args=(email, password, on_logged_in)).start()
+
+def set_icon(tree_window):
+    # Load the PNG image as a PhotoImage object
+    icon = tk.PhotoImage(file="icon.png")
+    # Set the icon photo for the window
+    tree_window.iconphoto(True, icon)
+    
+def create_window(job_data, job_clicked, job_applied_clicked, apply_job_thread, apply_jobs_thread, scan_all_seek_terms):
+    title = "Job Seeker"
+    # tree_window = create_window("Job Viewer", job_data, job_clicked, apply_job_thread, scan_all_seek_terms)
     globals.tree_window = tk.Tk()
     tree_window = globals.tree_window
+    set_icon(tree_window)
     tree_window.attributes("-zoomed", True)
     tree_window.configure(bg=globals.background_color)
     def on_closing():
@@ -62,20 +87,31 @@ def create_window(title, job_data, job_clicked, apply_job_thread, scan_all_seek_
         tree_window.quit()
     tree_window.protocol("WM_DELETE_WINDOW", on_closing)
     tree_window.title(title)
-    tree_window.columnconfigure(0, weight=1)
-    tree_window.rowconfigure(0, weight=1)
+    create_load_ui(tree_window)
+    set_visibility_load_ui(False)
+    create_treeview(tree_window, job_data, job_clicked, job_applied_clicked, apply_jobs_thread, bulk_apply, update_loading_label, on_background_action_end)
+    set_visibility_treeview(False)
+    create_login_ui(tree_window, start_login_thread)   # create a login ui here
+    # bindings for app
     tree_window.bind("<KeyPress-x>", lambda event, arg1=job_data, arg2=apply_job_thread, arg3=job_clicked: apply_job_ui(event, arg1, arg2, arg3)) #apply_job_ui)
     tree_window.bind("<KeyPress-c>", lambda event, arg1=job_data, arg2=scan_submit_response: open_text_input_popup(event, arg1, arg2))
-    # tree_window.bind("<KeyPress-b>", open_text_input_popup)
-    # tree_window.bind("<KeyPress-v>", apply_job_ui)
-    # tree_window.bind("<KeyPress-n>", toggle_loading_ui)
-    # tree_window.bind("<KeyPress-m>", toggle_treeview)
     return tree_window
 
+# def create_jobs_ui(job_data, job_clicked, job_applied_clicked, apply_job_thread, apply_jobs_thread, scan_all_seek_terms):
+   
 
-def create_jobs_ui(job_data, job_clicked, job_applied_clicked, apply_job_thread, apply_jobs_thread, scan_all_seek_terms):
-    tree_window = globals.tree_window
-    tree_window = create_window("Job Viewer", job_data, job_clicked, apply_job_thread, scan_all_seek_terms)
-    create_treeview(tree_window, job_data, job_clicked, job_applied_clicked, apply_jobs_thread, bulk_apply, show_load_ui, update_loading_label, on_background_action_end)
-    create_load_ui(tree_window)
-    return tree_window
+    # todo: make login in background
+    # if not login_to_seek(email, password):
+    #     # close main app? failure message first.
+    #     # close_web_driver()
+    #     set_visibility_login_ui(True)
+    # else:
+    #     set_visibility_treeview(True)
+
+    # ui = create_jobs_ui(globals.job_data, job_clicked, job_applied_clicked, apply_job_thread, apply_jobs_thread, scan_all_seek_terms)
+    # ui.mainloop() # update or mainloop or update_idletasks
+
+# tree_window.bind("<KeyPress-b>", open_text_input_popup)
+# tree_window.bind("<KeyPress-v>", apply_job_ui)
+# tree_window.bind("<KeyPress-n>", toggle_loading_ui)
+# tree_window.bind("<KeyPress-m>", toggle_treeview)
