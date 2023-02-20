@@ -6,11 +6,13 @@ import globals
 def set_visibility_login_ui(is_visible):
     if is_visible:
         print("Showing LoginUI")
-        globals.login_ui.grid()
+        #globals.login_ui.grid()
+        globals.login_ui.pack(fill=tk.BOTH, expand=True)
     else:
         print("Hiding LoginUI")
-        globals.login_ui.destroy()
+        #globals.login_ui.destroy()
         # globals.login_ui.grid_remove()
+        globals.login_ui.pack_forget()
 
 def save_login(username, password):
     if not os.path.exists(os.path.dirname(globals.login_directory)):

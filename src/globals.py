@@ -1,13 +1,17 @@
 # global variables
+import os
 from data.selected_job import SelectedJob
 from data.job_datas import JobDatas
 
 # paths
-geckodriver_path = '/usr/local/bin/geckodriver'
+# geckodriver_path = '/usr/local/bin/geckodriver'
+geckodriver_filepath = os.getcwd() + "/"    # current path is geckodriver path
 seek_url = "https://hk.jobsdb.com/hk"
 search_addition_url = "/search-jobs/"
 cover_letter_name = "marz_tierney_cover_letter.pdf"
 login_directory = "~/.config/job_seeker.txt"
+# geckodriver
+driver = None
 # settings
 background_color = '#111111'
 foreground_color = "#666666" # "white" # '#111111'

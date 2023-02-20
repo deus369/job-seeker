@@ -1,4 +1,7 @@
-A quick and dirty app, automates/assists job seeking.
+Through the power of Python and Chat GPT, my job seeker app was born,
+A tool to automate and ease the search, from dusk till dawn.
+Coding and programming made it possible,
+Now on GitHub it's all accessible.
 
     - Saves encrypted password
     - Scans job search terms

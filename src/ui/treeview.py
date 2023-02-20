@@ -17,7 +17,7 @@ applied_button_tag = "#3"
 url_column_tag = "#4"
 id_tag = "#5"
 
-def bulk_apply(event, tree, job_data, job_clicked, apply_jobs_thread, update_loading_label, on_background_action_end):
+def bulk_apply(event, tree, job_clicked, apply_jobs_thread, update_loading_label, on_background_action_end):
     if globals.is_performing_action:
         return
     print(" > Bulk applying for jobs! Confirming?")
@@ -28,6 +28,7 @@ def bulk_apply(event, tree, job_data, job_clicked, apply_jobs_thread, update_loa
         globals.is_performing_action = True
         set_visibility_load_ui(True)
         set_visibility_treeview(False)
+        # get all selected jobs as an array
         selected_jobs = [ ]
         i = 0
         for row in tree.selection():
@@ -49,7 +50,9 @@ def bulk_apply(event, tree, job_data, job_clicked, apply_jobs_thread, update_loa
             # if job_response != 0:
             #    tree.set(row, column=job_state_column, value=JobState(job_response).name)
             i = i + 1
-        threading.Thread(target=apply_jobs_thread, args=(job_data, selected_jobs, job_clicked, update_row_job_state, update_loading_label, on_background_action_end)).start()
+        threading.Thread(target=apply_jobs_thread,
+            args=(selected_jobs, job_clicked, update_row_job_state,
+                update_loading_label, on_background_action_end)).start()
 
 
 def update_row_job_state(job_response, row):
@@ -105,7 +108,7 @@ def create_treeview_loaded_jobs(job_data):
     for i, id in enumerate(job_data.job_ids):
         create_ui_row(tree, i, id, job_data.job_titles[i], job_data.job_urls[i], job_data.job_states[i])
 
-def create_treeview(tree_window, job_data, job_clicked, job_applied_clicked, apply_jobs_thread, bulk_apply, update_loading_label, on_background_action_end):
+def create_treeview(tree_window, job_clicked, job_applied_clicked, apply_jobs_thread, bulk_apply, update_loading_label, on_background_action_end):
     global scrollbar_y
     global scrollbar_x
     # spawn our widgets
@@ -177,7 +180,7 @@ def create_treeview(tree_window, job_data, job_clicked, job_applied_clicked, app
             # respond to clicks
             if (column == apply_button_tag):
                 print("Action clicked [" + row + "] [" + job_title + "]")
-                job_response = job_clicked(job_data, index, job_title, url, True)
+                job_response = job_clicked(index, job_title, url, True)
                 if job_response != 0:
                     tree.set(row, column=job_state_column, value=JobState(job_response).name)
             elif (column == url_column_tag):
@@ -188,17 +191,19 @@ def create_treeview(tree_window, job_data, job_clicked, job_applied_clicked, app
                     webbrowser.open(url)
             elif (column == applied_button_tag):
                 print("Applied before clicked [" + row + "] [" + job_title + "]")
-                if (job_applied_clicked(job_data, index, job_title)):
+                if (job_applied_clicked(index, job_title)):
                     tree.set(row, column=job_state_column, value=JobState.APPLIED.name)
     # bindings
-    # tree.tag_configure("new", background="#331111")
-    # for keypresses in our tree
-    # def print_selection(event):
-    #    print(tree.selection())
-    # tree.bind("<KeyPress-x>", print_selection)
-    # tree.bind("<KeyPress-z>", bulk_apply(tree_window))
-    tree_window.bind("<KeyPress-z>", lambda event, arg1=tree, arg2=job_data, arg3=job_clicked,
-        arg4=apply_jobs_thread, arg5=update_loading_label,
-        arg7=on_background_action_end: bulk_apply(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7))
+    tree_window.bind("<KeyPress-z>", lambda event,
+        arg1=tree, arg2=job_clicked,
+        arg3=apply_jobs_thread, arg4=update_loading_label,
+        arg5=on_background_action_end:
+            bulk_apply(event, arg1, arg2, arg3, arg4, arg5))
     tree.bind("<Button-1>", tree_clicked, "+")
-    create_treeview_loaded_jobs(job_data)
+
+# tree.tag_configure("new", background="#331111")
+# for keypresses in our tree
+# def print_selection(event):
+#    print(tree.selection())
+# tree.bind("<KeyPress-x>", print_selection)
+# tree.bind("<KeyPress-z>", bulk_apply(tree_window))
