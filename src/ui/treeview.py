@@ -18,7 +18,7 @@ url_column_tag = "#4"
 id_tag = "#5"
 
 def bulk_apply(event, tree, job_clicked, apply_jobs_thread, update_loading_label, on_background_action_end):
-    if globals.is_performing_action:
+    if globals.is_performing_action or len(tree.selection()) == 0:
         return
     print(" > Bulk applying for jobs! Confirming?")
     tree_window = event.widget

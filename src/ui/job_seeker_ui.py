@@ -48,15 +48,16 @@ def scan_submit_response(response_text):
 def on_add_job(i, job_id, job_title, job_link):
     create_ui_row(globals.tree, i, job_id, job_title, job_link, (JobState.NONE.value))
 
-def apply_job_ui(event, job_data, apply_job_thread, job_clicked):
-    if globals.is_performing_action:
+def apply_job_ui(event, apply_job_thread, job_clicked):
+    if globals.is_performing_action or len(globals.tree.selection()) == 0:
         return
     globals.is_performing_action = True
     set_visibility_load_ui(True)
     set_visibility_treeview(False)
     # Start the action
     # threading.Thread(target=apply_job_thread).start()
-    threading.Thread(target=apply_job_thread, args=(job_data, globals.selected_job, job_clicked, update_row_job_state, update_loading_label, on_background_action_end)).start()
+    threading.Thread(target=apply_job_thread,
+        args=(globals.selected_job, job_clicked, update_row_job_state, update_loading_label, on_background_action_end)).start()
 
 #title, job_data, job_clicked, apply_job_thread, scan_all_seek_terms):
 
@@ -97,8 +98,10 @@ def create_window(job_clicked, job_applied_clicked, apply_job_thread, apply_jobs
     create_login_ui(tree_window, start_login_thread)   # create a login ui here
     set_visibility_login_ui(False)
     # bindings for app
-    tree_window.bind("<KeyPress-x>", lambda event, arg1=apply_job_thread, arg2=job_clicked: apply_job_ui(event, arg1, arg2)) #apply_job_ui)
-    tree_window.bind("<KeyPress-c>", lambda event, arg1=scan_submit_response: open_text_input_popup(event, arg1))
+    tree_window.bind("<KeyPress-x>", lambda event,
+        arg1=apply_job_thread, arg2=job_clicked: apply_job_ui(event, arg1, arg2)) #apply_job_ui)
+    tree_window.bind("<KeyPress-c>", lambda event,
+        arg1=scan_submit_response: open_text_input_popup(event, arg1))
     return tree_window
 
 # def create_jobs_ui(job_data, job_clicked, job_applied_clicked, apply_job_thread, apply_jobs_thread, scan_all_seek_terms):
