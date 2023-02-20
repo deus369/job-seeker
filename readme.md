@@ -8,8 +8,6 @@ A quick and dirty app, automates/assists job seeking.
 <div align="center">
   <div style="display: inline-block">
     <img src="screenshots/Screenshot_2023-02-20_19-08-21.png" />
-  </div>
-  <div style="display: inline-block">
     <img src="screenshots/Screenshot_2023-02-20_19-08-51.png" />
   </div>
   <div style="display: block; margin-top: 10px;">
