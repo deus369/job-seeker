@@ -12,6 +12,7 @@ seek_url = "https://hk.jobsdb.com/hk"
 search_addition_url = "/search-jobs/"
 cover_letter_name = "marz_tierney_cover_letter.pdf"
 login_directory = "~/.config/job_seeker.txt"
+load_timeout = 20 # 10
 # geckodriver
 driver = None
 # settings

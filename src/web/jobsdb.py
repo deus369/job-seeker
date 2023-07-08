@@ -22,7 +22,7 @@ def scan_job_page(job_data, base_url, page_no, on_add_job):
     # Navigate to website
     print("Navigating [" + str(len(job_data.job_ids)) + "] to URL [" + url + "]")
     globals.driver.get(url)
-    wait = WebDriverWait(globals.driver, 12)
+    wait = WebDriverWait(globals.driver, globals.load_timeout)
     if (globals.driver.current_url == base_url):
         print("URL [" + base_url + "] ended on Page [" + str(page_no - 1) + "]")
         return False
@@ -84,7 +84,7 @@ def login_to_seek(email, password, on_logged_in):
     # first go to page
     print(" > Navigating to Seek Page.")
     globals.driver.get(globals.seek_url)
-    wait = WebDriverWait(globals.driver, 12)
+    wait = WebDriverWait(globals.driver, globals.load_timeout)
     print(" > Seek Page Arrived.")
     login_element = globals.driver.find_element(By.XPATH, "//*[contains(@title, 'Login')]")
     if not login_element:
@@ -92,7 +92,7 @@ def login_to_seek(email, password, on_logged_in):
         return False
     print(" > Clicking Login Page Link.")
     login_element.click()
-    wait = WebDriverWait(globals.driver, 12)
+    wait = WebDriverWait(globals.driver, globals.load_timeout)
     wait.until(EC.visibility_of_element_located((By.XPATH, "//input[@type='text']")))
     print(" > Login Page Arrived.")
     try:
@@ -115,7 +115,7 @@ def login_to_seek(email, password, on_logged_in):
             print(" > Clicking Login Button.")
             element.click()
             break
-    wait = WebDriverWait(globals.driver, 12)
+    wait = WebDriverWait(globals.driver, globals.load_timeout)
     print(" > Logged in to [" + globals.seek_url + "].")
     driver = globals.driver
     wait.until(lambda driver: globals.driver.current_url == globals.seek_url)
@@ -128,7 +128,7 @@ def apply_for_job(apply_url):
     check_driver_status()
     driver = globals.driver
     globals.driver.get(apply_url)
-    wait = WebDriverWait(globals.driver, 12)
+    wait = WebDriverWait(globals.driver, globals.load_timeout)
     print(" > Job Page Arrived\n[" + globals.driver.current_url + "]")
     try:
         apply_button = globals.driver.find_element(By.XPATH, "//a[@data-automation='applyNowButton']")
@@ -142,7 +142,7 @@ def apply_for_job(apply_url):
     except: # WebDriverException:
         print("apply_button.click had a exception.")
         return 0
-    wait = WebDriverWait(globals.driver, 10)
+    wait = WebDriverWait(globals.driver, globals.load_timeout)
     # Get the new window handles
     new_handles = globals.driver.window_handles
     if original_handles == new_handles:
@@ -166,7 +166,7 @@ def apply_for_job(apply_url):
         return int(JobState.EXTERNAL_LINK.value)
 
     # continue loading new tab
-    wait = WebDriverWait(globals.driver, 10) # wait for new tab to load
+    wait = WebDriverWait(globals.driver, globals.load_timeout) # wait for new tab to load
     # wait.until(EC.visibility_of_element_located((By.ID, "btn-submit")))
     try:
         wait.until(EC.visibility_of_element_located((By.XPATH, "//span[@id='txt-upload-coverLetter']")))
@@ -229,7 +229,7 @@ def apply_for_job(apply_url):
         print(" > Submit button clicked")
 
         # wait for tab to close?
-        wait = WebDriverWait(globals.driver, 22)
+        wait = WebDriverWait(globals.driver, globals.load_timeout)
         try:
             wait.until(lambda driver: "apply-success" in globals.driver.current_url)
         except TimeoutException:
