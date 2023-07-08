@@ -42,7 +42,7 @@ def scan_submit_response(response_text):
     print("Text input received: " + response_text)
     response = messagebox.askyesno("Confirm", "Scan jobs for [" + response_text + "]?")
     if response:
-        scan_all_seek_terms(job_data, [ response_text ], on_add_job)
+        scan_all_seek_terms(globals.job_data, [ response_text ], on_add_job)
         globals.job_data.save_data()
 
 def on_add_job(i, job_id, job_title, job_link):

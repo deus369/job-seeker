@@ -11,7 +11,7 @@ from util.core_util import *
 
 # keys: (z) apply jobs (x) apply job  (c) scan
 # z to apply for multiple jobs
-# b to open scanner and scan more jobs
+# c to open scanner and scan more jobs
 # need to make scanning background thread
 # need a delete button
 # also, make ui for actions hide treeview and just be fullscreen in window, instead of the hack solution i have

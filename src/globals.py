@@ -5,7 +5,9 @@ from data.job_datas import JobDatas
 
 # paths
 # geckodriver_path = '/usr/local/bin/geckodriver'
-geckodriver_filepath = os.getcwd() + "/"    # current path is geckodriver path
+# geckodriver_filepath = os.getcwd() + "/"    # current path is geckodriver path
+geckodriver_filepath = "/usr/bin/"    # current path is geckodriver path
+firefox_filepath = "/usr/bin/firefox"
 seek_url = "https://hk.jobsdb.com/hk"
 search_addition_url = "/search-jobs/"
 cover_letter_name = "marz_tierney_cover_letter.pdf"

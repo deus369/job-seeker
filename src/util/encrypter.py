@@ -10,7 +10,7 @@ salt = b'\xee\x8f\x9a\x08\x1e\xeb\xab\xda\x9a\xd9\x9c\xea\xbe\xac\xef\x1d'
 # generate a password key
 password = b'MySuperSecretPassword'
 kdf = PBKDF2HMAC(
-    algorithm=hashes.SHA256,
+    algorithm=hashes.SHA256(),
     length=32,
     salt=salt,
     iterations=100000,

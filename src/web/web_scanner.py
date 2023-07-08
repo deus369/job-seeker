@@ -20,15 +20,15 @@ driver_headless = True
 is_disable_submission = False
 
 def open_web_driver(is_headless):
-    firefox_filepath = "/usr/bin/firefox"
     # log_path = "/var/log/" # os.path.expanduser("~/geckodriver.log")
     log_path = "/tmp/geckodriver.log" # "/dev/null" # None # "/tmp/geckodriver.log"
     driver_headless = is_headless
-    print("Firefox filepath is [" + firefox_filepath + "]")
+    print("Firefox filepath is [" + globals.firefox_filepath + "]")
     print("Geckodriver filepath is [" + globals.geckodriver_filepath + "]")
     print("Log filepath is [" + str(log_path) + "]")
     options = webdriver.FirefoxOptions()
-    options.binary_location = firefox_filepath
+    options.binary_location = globals.firefox_filepath
+    # options.executable_path = "/usr/bin/geckodriver"
     options.profile = None
     if (is_headless):
         options.add_argument("--headless")
