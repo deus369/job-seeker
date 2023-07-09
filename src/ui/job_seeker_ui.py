@@ -57,7 +57,7 @@ def apply_job_ui(event, apply_job_thread, job_clicked):
     # Start the action
     # threading.Thread(target=apply_job_thread).start()
     threading.Thread(target=apply_job_thread,
-        args=(globals.selected_job, job_clicked, update_row_job_state, update_loading_label, on_background_action_end)).start()
+        args=(globals.selected_job, job_clicked, update_row_job_state, on_background_action_end)).start()
 
 #title, job_data, job_clicked, apply_job_thread, scan_all_seek_terms):
 
@@ -68,8 +68,8 @@ def on_logged_in():
 
 def start_login_thread(email, password):
     set_visibility_load_ui(True)
-    update_loading_label("Logging In")
-    update_loading_label2("~")
+    globals.update_label("Logging In")
+    globals.update_label2("")
     threading.Thread(target=login_to_seek, args=(email, password, on_logged_in)).start()
 
 def set_icon(tree_window):
@@ -93,7 +93,7 @@ def create_window(job_clicked, job_applied_clicked, apply_job_thread, apply_jobs
     tree_window.title(title)
     create_load_ui(tree_window)
     set_visibility_load_ui(False)
-    create_treeview(tree_window, job_clicked, job_applied_clicked, apply_jobs_thread, bulk_apply, update_loading_label, on_background_action_end)
+    create_treeview(tree_window, job_clicked, job_applied_clicked, apply_jobs_thread, bulk_apply, on_background_action_end)
     set_visibility_treeview(False)
     create_login_ui(tree_window, start_login_thread)   # create a login ui here
     set_visibility_login_ui(False)

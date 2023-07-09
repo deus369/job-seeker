@@ -16,19 +16,17 @@ from util.core_util import *
 # need a delete button
 # also, make ui for actions hide treeview and just be fullscreen in window, instead of the hack solution i have
 
-is_clear = False        # False True
-is_headless = True      # False True
 
 # "https://hk.jobsdb.com/hk/search-jobs/game-designer")
 def main():
     ui = create_window(job_clicked, job_applied_clicked, apply_job_thread, apply_jobs_thread)
     set_visibility_load_ui(True)
-    update_loading_label("Loading")
-    update_loading_label2("~")
+    globals.update_label("Loading")
+    globals.update_label2("")
     ui.update()
-    if open_web_driver(is_headless) is None:
+    if open_web_driver(globals.is_headless) is None:
         return
-    if not is_clear:
+    if not globals.is_clear:
         globals.job_data.load_data()
         create_treeview_loaded_jobs(globals.job_data)
         # print("Totally found [" + str(len(job_data.job_ids)) + "] jobs.")
@@ -36,6 +34,10 @@ def main():
     set_visibility_login_ui(True)
     ui.mainloop()
     close_web_driver()
+
+globals.update_label = update_loading_label
+globals.update_label2 = update_loading_label2
+globals.set_progress = update_loading_bar
 
 main()
 

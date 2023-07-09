@@ -82,19 +82,26 @@ def login_to_seek(email, password, on_logged_in):
     global password_cache
     password_cache = password
     # first go to page
-    print(" > Navigating to Seek Page.")
+    print(" > navigating to seek page")
+    globals.update_label2(" > navigating to seek page")
+    globals.set_progress(0)
     globals.driver.get(globals.seek_url)
     wait = WebDriverWait(globals.driver, globals.load_timeout)
-    print(" > Seek Page Arrived.")
+    print(" > seek page arrived")
+    globals.update_label2(" > seek page arrived")
     login_element = globals.driver.find_element(By.XPATH, "//*[contains(@title, 'Login')]")
     if not login_element:
         print("Login element null.")
         return False
-    print(" > Clicking Login Page Link.")
+    print(" > clicking login page link")
+    globals.update_label2(" > clicking login page link")
+    globals.set_progress(25)
     login_element.click()
     wait = WebDriverWait(globals.driver, globals.load_timeout)
     wait.until(EC.visibility_of_element_located((By.XPATH, "//input[@type='text']")))
-    print(" > Login Page Arrived.")
+    print(" > login page arrived")
+    globals.update_label2(" > login page arrived")
+    globals.set_progress(50)
     try:
         email_element = globals.driver.find_element(By.XPATH, "//input[@type='text']")
     except NoSuchElementException:
@@ -116,9 +123,12 @@ def login_to_seek(email, password, on_logged_in):
             element.click()
             break
     wait = WebDriverWait(globals.driver, globals.load_timeout)
-    print(" > Logged in to [" + globals.seek_url + "].")
+    print(" > logged in to [" + globals.seek_url + "]")
+    globals.update_label2(" > logged in to [" + globals.seek_url + "]")
+    globals.set_progress(75)
     driver = globals.driver
     wait.until(lambda driver: globals.driver.current_url == globals.seek_url)
+    globals.set_progress(100.0)
     if on_logged_in != None:
         on_logged_in()
     return True
@@ -127,27 +137,32 @@ def login_to_seek(email, password, on_logged_in):
 def apply_for_job(apply_url):
     check_driver_status()
     driver = globals.driver
+    globals.update_label2(" > navigating to [" + apply_url + "]")
+    globals.set_progress(0.0)
     globals.driver.get(apply_url)
     wait = WebDriverWait(globals.driver, globals.load_timeout)
-    print(" > Job Page Arrived\n[" + globals.driver.current_url + "]")
+    globals.update_label2(" > job page arrived [" + globals.driver.current_url + "]")
+    globals.set_progress(0.1)
     try:
         apply_button = globals.driver.find_element(By.XPATH, "//a[@data-automation='applyNowButton']")
     except NoSuchElementException:
-        print("apply_button not found.")
+        globals.update_label2(" ! apply_button not found")
         return 0
     # Get the current window handles
     original_handles = globals.driver.window_handles
     try:
         apply_button.click()
     except: # WebDriverException:
-        print("apply_button.click had a exception.")
+        globals.update_label2(" ! apply_button.click had a exception")
         return 0
     wait = WebDriverWait(globals.driver, globals.load_timeout)
+    time.sleep(1)   # added extra wait here
     # Get the new window handles
     new_handles = globals.driver.window_handles
     if original_handles == new_handles:
-        print("New tab did not open.")
+        globals.update_label2(" ! new tab did not open")
         return 0
+    globals.update_label2(" > job tab opened")
     # check new tab
     new_tab = list(set(new_handles) - set(original_handles))[0] # Get the new window handle
     globals.driver.switch_to.window(new_tab)
@@ -160,7 +175,7 @@ def apply_for_job(apply_url):
     new_url = globals.driver.current_url
     # If the link is external
     if "PopUpJobApplicationExternalLink" in new_url or not "hk.jobsdb.com" in new_url:
-        print(" > New job tab was not on website [" + new_url + "]")
+        globals.update_label2(" > new job tab was not on website [" + new_url + "]")
         globals.driver.close()  # Close the tab
         globals.driver.switch_to.window(globals.driver.window_handles[0])  # Switch to first tab
         return int(JobState.EXTERNAL_LINK.value)
@@ -173,9 +188,10 @@ def apply_for_job(apply_url):
     except TimeoutException:
         print("Timed out waiting for txt-upload-coverLetter to load")
         return 0
-    
-    print(" > Job Apply Page!\n[" + globals.driver.current_url + "]")
-    time.sleep(1.2) # wait for it to load the cover letters
+
+    globals.update_label2(" > job apply page [" + globals.driver.current_url + "]")
+    globals.set_progress(0.5)
+    time.sleep(1) # wait for it to load the cover letters
     # chose cover letter - click open cover letter selector
     try:
         add_cover_letter_span = globals.driver.find_element(By.XPATH, "//span[@id='txt-upload-coverLetter']")
@@ -187,7 +203,7 @@ def apply_for_job(apply_url):
     except: #  WebDriverException:
         print("add_cover_letter_span.click had a exception.")
         return 0
-    print(" > Clicked button for cover letter.")
+    globals.update_label2(" > clicked button for cover letter")
     wait.until(EC.visibility_of_element_located((By.XPATH, "//button[*/*[text()='Done']]")))  # wait for it to load
     # select cover letter for the job
     try:
@@ -202,7 +218,7 @@ def apply_for_job(apply_url):
         print("radio_button.click had a exception.")
         return 0
 
-    print(" > Selected cover letter.")
+    globals.update_label2(" > selected cover letter")
     # click done
     try:
         done_button = globals.driver.find_element(By.XPATH, "//button[*/*[text()='Done']]")
@@ -226,7 +242,7 @@ def apply_for_job(apply_url):
         except: #  WebDriverException:
             print("submit_button.click had a WebDriverException exception.")
             return 0
-        print(" > Submit button clicked")
+        globals.update_label2(" > submit button clicked")
 
         # wait for tab to close?
         wait = WebDriverWait(globals.driver, globals.load_timeout)
@@ -236,7 +252,8 @@ def apply_for_job(apply_url):
             print("Timed out waiting for apply-success to load")
             return 0
     
-    print(" > Success Applying for job.")
+    globals.update_label2(" > success applying for job")
+    globals.set_progress(1.0)
     globals.driver.close()  # Close the tab
     globals.driver.switch_to.window(globals.driver.window_handles[0])  # Switch to first tab
     return int(JobState.APPLIED.value)

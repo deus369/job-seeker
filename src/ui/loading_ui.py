@@ -18,45 +18,39 @@ def toggle_treeview(event):
 
 def toggle_loading_ui(event):
     tree_window = event.widget
-    set_visibility_load_ui(progress_bar.winfo_ismapped())
-    set_visibility_treeview(not progress_bar.winfo_ismapped())
+    set_visibility_load_ui(globals.progress_bar.winfo_ismapped())
+    set_visibility_treeview(not globals.progress_bar.winfo_ismapped())
 
 def update_loading_bar(percentage):
-    global progress_bar
-    progress_bar['value'] = percentage
+    globals.progress_bar['value'] = percentage
 
 def update_loading_label(text):
-    global load_label
-    load_label['text'] = text
+    globals.load_label['text'] = text
 
 def update_loading_label2(text):
-    global load_label2
-    load_label2['text'] = text
+    globals.load_label2['text'] = text
 
 def create_load_ui(tree_window):
     if (tree_window == None):
         return
-    global progress_bar
-    global load_label
-    global load_label2
     ttk.Style().configure("TProgressbar", foreground=globals.foreground_color, background=globals.background_color)
     load_ui = tk.Frame(tree_window)
     globals.load_ui = load_ui
     load_ui.pack(fill=tk.BOTH, expand=True)
     load_ui.configure(background=globals.background_color)
-    load_label = tk.Label(load_ui, text='Loading [1 out of 1]', font=("Monocraft", 14, "bold"))
-    load_label.configure(bg=globals.background_color, foreground=globals.font_color)
-    load_label.pack(pady=20, side=tk.TOP, expand=True, anchor="center")
-    load_label2 = tk.Label(load_ui, text='A description of loading', font=("Monocraft", 8, "bold"))
-    load_label2.configure(bg=globals.background_color, foreground=globals.font_color)
-    load_label2.pack(pady=20, side=tk.TOP, expand=True, anchor="center")
-    progress_bar = ttk.Progressbar(load_ui, orient="horizontal", length=200, mode="determinate")
-    progress_bar.pack(pady=20, side=tk.TOP, expand=True, anchor="center")
-    progress_bar.start()
+    globals.load_label = tk.Label(load_ui, text='Loading [1 out of 1]', font=("Monocraft", 14, "bold"))
+    globals.load_label.configure(bg=globals.background_color, foreground=globals.font_color)
+    globals.load_label.pack(pady=20, side=tk.TOP, expand=True, anchor="center")
+    globals.load_label2 = tk.Label(load_ui, text='A description of loading', font=("Monocraft", 8, "bold"))
+    globals.load_label2.configure(bg=globals.background_color, foreground=globals.font_color)
+    globals.load_label2.pack(pady=20, side=tk.TOP, expand=True, anchor="center")
+    globals.progress_bar = ttk.Progressbar(load_ui, orient="horizontal", length=200, mode="determinate")
+    globals.progress_bar.pack(pady=20, side=tk.TOP, expand=True, anchor="center")
+    # globals.progress_bar.start()
     set_visibility_load_ui(False)
 
 #load_label.grid(row=0, column=0, columnspan=2, pady=10, padx=10, sticky='nsew')
-#progress_bar.grid(row=1, column=0, columnspan=2, pady=10, padx=10, sticky='nsew')
+# progress_bar.grid(row=1, column=0, columnspan=2, pady=10, padx=10, sticky='nsew')
 # progress_bar.configure(bg=globals.background_color, foreground=globals.font_color)
 
 # def update_loading_label2(text):

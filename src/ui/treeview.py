@@ -17,7 +17,7 @@ applied_button_tag = "#3"
 url_column_tag = "#4"
 id_tag = "#5"
 
-def bulk_apply(event, tree, job_clicked, apply_jobs_thread, update_loading_label, on_background_action_end):
+def bulk_apply(event, tree, job_clicked, apply_jobs_thread, on_background_action_end):
     if globals.is_performing_action or len(tree.selection()) == 0:
         return
     print(" > Bulk applying for jobs! Confirming?")
@@ -50,9 +50,7 @@ def bulk_apply(event, tree, job_clicked, apply_jobs_thread, update_loading_label
             # if job_response != 0:
             #    tree.set(row, column=job_state_column, value=JobState(job_response).name)
             i = i + 1
-        threading.Thread(target=apply_jobs_thread,
-            args=(selected_jobs, job_clicked, update_row_job_state,
-                update_loading_label, on_background_action_end)).start()
+        threading.Thread(target=apply_jobs_thread, args=(selected_jobs, job_clicked, update_row_job_state, on_background_action_end)).start()
 
 
 def update_row_job_state(job_response, row):
@@ -108,7 +106,7 @@ def create_treeview_loaded_jobs(job_data):
     for i, id in enumerate(job_data.job_ids):
         create_ui_row(tree, i, id, job_data.job_titles[i], job_data.job_urls[i], job_data.job_states[i])
 
-def create_treeview(tree_window, job_clicked, job_applied_clicked, apply_jobs_thread, bulk_apply, update_loading_label, on_background_action_end):
+def create_treeview(tree_window, job_clicked, job_applied_clicked, apply_jobs_thread, bulk_apply, on_background_action_end):
     global scrollbar_y
     global scrollbar_x
     # spawn our widgets
@@ -194,11 +192,7 @@ def create_treeview(tree_window, job_clicked, job_applied_clicked, apply_jobs_th
                 if (job_applied_clicked(index, job_title)):
                     tree.set(row, column=job_state_column, value=JobState.APPLIED.name)
     # bindings
-    tree_window.bind("<KeyPress-z>", lambda event,
-        arg1=tree, arg2=job_clicked,
-        arg3=apply_jobs_thread, arg4=update_loading_label,
-        arg5=on_background_action_end:
-            bulk_apply(event, arg1, arg2, arg3, arg4, arg5))
+    tree_window.bind("<KeyPress-z>", lambda event, arg1=tree, arg2=job_clicked, arg3=apply_jobs_thread, arg4=on_background_action_end: bulk_apply(event, arg1, arg2, arg3, arg4))
     tree.bind("<Button-1>", tree_clicked, "+")
 
 # tree.tag_configure("new", background="#331111")

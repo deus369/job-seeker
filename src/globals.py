@@ -3,6 +3,8 @@ import os
 from data.selected_job import SelectedJob
 from data.job_datas import JobDatas
 
+is_headless = True      # False True
+is_clear = False        # False True
 # paths
 # geckodriver_path = '/usr/local/bin/geckodriver'
 # geckodriver_filepath = os.getcwd() + "/"    # current path is geckodriver path
@@ -31,6 +33,12 @@ login_ui = None
 load_ui = None
 username_var = None
 password_var = None
+load_label = None
+load_label2 = None
+progress_bar = None
+# functions
 start_login_thread_ = None
-
+update_label = None
+update_label2 = None
+set_progress = None
 # url_hk_jobsdb = "https://hk.jobsdb.com/hk/search-jobs/"
