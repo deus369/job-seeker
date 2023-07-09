@@ -1,7 +1,5 @@
 #!/bin/sh
 
-cd ..
-
 # Create the directory for your application
 if [ ! -d "/usr/local/jobseeker" ]; then
     sudo mkdir /usr/local/jobseeker

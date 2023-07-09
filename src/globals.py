@@ -29,5 +29,8 @@ tree_window = None
 tree = None
 login_ui = None
 load_ui = None
+username_var = None
+password_var = None
+start_login_thread_ = None
 
 # url_hk_jobsdb = "https://hk.jobsdb.com/hk/search-jobs/"

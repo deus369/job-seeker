@@ -98,10 +98,8 @@ def create_window(job_clicked, job_applied_clicked, apply_job_thread, apply_jobs
     create_login_ui(tree_window, start_login_thread)   # create a login ui here
     set_visibility_login_ui(False)
     # bindings for app
-    tree_window.bind("<KeyPress-x>", lambda event,
-        arg1=apply_job_thread, arg2=job_clicked: apply_job_ui(event, arg1, arg2)) #apply_job_ui)
-    tree_window.bind("<KeyPress-c>", lambda event,
-        arg1=scan_submit_response: open_text_input_popup(event, arg1))
+    tree_window.bind("<KeyPress-x>", lambda event, arg1=apply_job_thread, arg2=job_clicked: apply_job_ui(event, arg1, arg2)) #apply_job_ui)
+    tree_window.bind("<KeyPress-c>", lambda event, arg1=scan_submit_response: open_text_input_popup(event, arg1))
     return tree_window
 
 # def create_jobs_ui(job_data, job_clicked, job_applied_clicked, apply_job_thread, apply_jobs_thread, scan_all_seek_terms):
